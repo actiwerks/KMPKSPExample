@@ -1,11 +1,8 @@
 package actiwerks.ksp
 
 
-import com.google.devtools.ksp.*
 import com.google.devtools.ksp.processing.*
 import com.google.devtools.ksp.symbol.KSAnnotated
-import com.google.devtools.ksp.symbol.KSClassDeclaration
-import com.google.devtools.ksp.symbol.KSFunctionDeclaration
 import java.io.OutputStream
 
 class KSPProvider : SymbolProcessorProvider {
@@ -21,16 +18,16 @@ class KSPProcessor constructor(private val environment: SymbolProcessorEnvironme
     private var generated = false
 
     override fun process(resolver: Resolver): List<KSAnnotated> {
-        environment.logger.warn("Processing KSP, file count: ${environment.codeGenerator.generatedFile.size} info: ${environment.options} platforms: ${environment.platforms}")
+        logger.warn("Processing KSP, file count: ${environment.codeGenerator.generatedFile.size} info: ${environment.options} platforms: ${environment.platforms}")
 
         // Note: neither of these is not printed to the standard build console, you need to tweak the run settings or use warning instead
-        environment.logger.info("Processing KSP Info")
-        environment.logger.logging("Processing KSP logging")
+        logger.info("Processing KSP Info")
+        logger.logging("Processing KSP logging")
 
         if (!generated) {
 
             val packageName = "actiwerks.ksp"
-            val file: OutputStream = environment.codeGenerator.createNewFile(
+            val file: OutputStream = codeGenerator.createNewFile(
                 dependencies = Dependencies(false, *resolver.getAllFiles().toList().toTypedArray()),
                 packageName = packageName,
                 fileName = "ExampleGenerated"
